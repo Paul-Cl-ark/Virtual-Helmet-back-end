@@ -23,6 +23,10 @@ const SpotSchema = new Schema({
 		type: String,
 		trim: true,
 		required: true
+	},
+	user: {
+		type: String
+		// required: true
 	}
 })
 module.exports = mongoose.model('Spot', SpotSchema)

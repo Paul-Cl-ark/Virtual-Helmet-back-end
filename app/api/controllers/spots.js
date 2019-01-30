@@ -22,7 +22,8 @@ module.exports = {
 						type: spot.type,
 						latitude: spot.latitude,
 						longitude: spot.longitude,
-						description: spot.description
+						description: spot.description,
+						user: spot.user
 					})
 				}
 				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
@@ -55,17 +56,16 @@ module.exports = {
 		})
 	},
 	create: function(req, res, next) {
-		spotModel.create(
-			{
-				type: req.body.type,
-				latitude: req.body.latitude,
-				longitude: req.body.longitude,
-				description: req.body.description
-			},
-			function(err, result) {
-				if (err) next(err)
-				else res.json({ status: 'success', message: 'Spot added successfully!', data: null })
-			}
-		)
+		const newSpot = {
+			type: req.body.type,
+			latitude: req.body.latitude,
+			longitude: req.body.longitude,
+			description: req.body.description,
+			user: req.body.user
+		}
+		spotModel.create(newSpot, function(err, result) {
+			if (err) next(err)
+			else res.json({ status: 'success', message: 'Spot added successfully!', data: null })
+		})
 	}
 }

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Paul-Cl-ark/Virtual-Helmet-back-end#readme",
   "dependencies": {
-    "bcrypt": "^3.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",

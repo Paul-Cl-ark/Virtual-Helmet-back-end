@@ -4,7 +4,7 @@ const spots = require('./routes/spots')
 const users = require('./routes/users')
 const bodyParser = require('body-parser')
 const mongoose = require('./config/database') //database configuration
-var jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const app = express()
 require('dotenv').load()
 
@@ -13,9 +13,13 @@ app.set('secretKey', process.env.TOKEN) // jwt secret token
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 app.use(logger('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
-app.get('/', function(req, res) {
-	res.json({ tutorial: 'Build REST API with node.js' })
+
+app.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+	next()
 })
+
 // public route
 app.use('/users', users)
 // private route

@@ -20,42 +20,5 @@ module.exports = {
 				else res.json({ status: 'success', message: 'User added successfully!', data: null })
 			}
 		)
-	},
-	authenticate: function(req, res, next) {
-		passport.authenticate(
-			'local',
-			(function(err, user, info) {
-				if (err) {
-					next(err)
-					debugger
-				} else {
-					// return res.json({
-					// 	status: 'success',
-					// 	message: 'User found!',
-					// 	data: { user: user }
-					// })
-					debugger
-				}
-			})(req, res, next)
-		)
 	}
-	// userModel.findOne({ email: req.body.email }, function(err, user) {
-	// 	if (err) {
-	// 		next(err)
-	// 	} else {
-	// 		if (bcrypt.compareSync(req.body.password, user.password)) {
-	// 			const token = jwt.sign({ id: user._id }, req.app.get('secretKey'), {
-	// 				expiresIn: '1h'
-	// 			})
-	// 			res.json({
-	// 				status: 'success',
-	// 				message: 'User found!',
-	// 				data: { user: user, token: token }
-	// 			})
-	// 		} else {
-	// 			res.json({ status: 'error', message: 'Invalid email/password!', data: null })
-	// 		}
-	// 	}
-	// })
-	// }
 }

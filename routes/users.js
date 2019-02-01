@@ -26,3 +26,7 @@ router.post('/authenticate', function(req, res, next) {
 	})(req, res, next)
 })
 module.exports = router
+
+router.get('/logout', (req, res) => {
+	req.logout()
+})

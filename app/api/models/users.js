@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
+var uniqueValidator = require('mongoose-unique-validator')
+
 const bcrypt = require('bcryptjs')
 const saltRounds = 10
+
 const SchemaTypes = mongoose.Schema.Types
 
 const Schema = mongoose.Schema
@@ -17,6 +20,7 @@ const UserSchema = new Schema({
 	},
 	email: {
 		type: String,
+		unique: true,
 		trim: true,
 		required: true
 	},
@@ -32,4 +36,7 @@ UserSchema.pre('save', function(next) {
 	this.password = bcrypt.hashSync(this.password, saltRounds)
 	next()
 })
+
+UserSchema.plugin(uniqueValidator, { message: 'is already in use.' })
+
 module.exports = mongoose.model('User', UserSchema)

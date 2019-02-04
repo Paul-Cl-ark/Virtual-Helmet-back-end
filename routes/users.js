@@ -17,7 +17,7 @@ router.post('/authenticate', (req, res, next) => {
 		if (!user) {
 			return res.json({ message: 'Invalid credentials' })
 		}
-		req.logIn(user, err => {
+		return req.logIn(user, err => {
 			if (err) {
 				return next(err)
 			}

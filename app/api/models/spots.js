@@ -25,8 +25,8 @@ const SpotSchema = new Schema({
 		required: true
 	},
 	user: {
-		type: String
-		// required: true
+		type: String,
+		required: true
 	}
 })
 module.exports = mongoose.model('Spot', SpotSchema)

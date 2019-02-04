@@ -1,8 +1,8 @@
 const spotModel = require('../models/spots')
 module.exports = {
-	getById: function(req, res, next) {
+	getById: (req, res, next) => {
 		console.log(req.body)
-		spotModel.findById(req.params.spotId, function(err, spotInfo) {
+		spotModel.findById(req.params.spotId, (err, spotInfo) => {
 			if (err) {
 				next(err)
 			} else {
@@ -10,9 +10,9 @@ module.exports = {
 			}
 		})
 	},
-	getAll: function(req, res, next) {
+	getAll: (req, res, next) => {
 		let spotsList = []
-		spotModel.find({}, function(err, spots) {
+		spotModel.find({}, (err, spots) => {
 			if (err) {
 				next(err)
 			} else {
@@ -30,7 +30,7 @@ module.exports = {
 			}
 		})
 	},
-	updateById: function(req, res, next) {
+	updateById: (req, res, next) => {
 		spotModel.findByIdAndUpdate(
 			req.params.spotId,
 			{
@@ -39,7 +39,7 @@ module.exports = {
 				longitude: req.body.latitude,
 				description: req.body.description
 			},
-			function(err, spotInfo) {
+			(err, spotInfo) => {
 				if (err) next(err)
 				else {
 					res.json({ status: 'success', message: 'Spot updated successfully!', data: null })
@@ -47,7 +47,7 @@ module.exports = {
 			}
 		)
 	},
-	deleteById: function(req, res, next) {
+	deleteById: (req, res, next) => {
 		spotModel.findByIdAndRemove(req.params.spotId, function(err, spotInfo) {
 			if (err) next(err)
 			else {
@@ -55,7 +55,7 @@ module.exports = {
 			}
 		})
 	},
-	create: function(req, res, next) {
+	create: (req, res, next) => {
 		const newSpot = {
 			type: req.body.type,
 			latitude: req.body.latitude,
@@ -63,9 +63,9 @@ module.exports = {
 			description: req.body.description,
 			user: req.body.user
 		}
-		spotModel.create(newSpot, function(err, result) {
+		spotModel.create(newSpot, (err, result) => {
 			if (err) next(err)
-			else res.json({ status: 'success', message: 'Spot added successfully!', data: null })
+			else res.json({ status: 'success', message: 'Spot added successfully!', data: newSpot })
 		})
 	}
 }

@@ -25,8 +25,10 @@ router.post('/authenticate', (req, res, next) => {
 		})
 	})(req, res, next)
 })
-module.exports = router
 
 router.get('/logout', (req, res) => {
 	req.logout()
+	return res.json({ message: 'User successfully logged out' })
 })
+
+module.exports = router

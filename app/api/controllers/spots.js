@@ -1,4 +1,6 @@
 const spotModel = require('../models/spots')
+const { ensureAuthenticated } = require('../../../helpers/auth')
+
 module.exports = {
 	getById: (req, res, next) => {
 		console.log(req.body)
@@ -30,6 +32,28 @@ module.exports = {
 			}
 		})
 	},
+	getUserSpotsOnly: (ensureAuthenticated,
+	(req, res, next) => {
+		console.log(req.user)
+		let spotsList = []
+		spotModel.find({ user: req.user.id }, (err, spots) => {
+			if (err) {
+				next(err)
+			} else {
+				for (let spot of spots) {
+					spotsList.push({
+						id: spot._id,
+						type: spot.type,
+						latitude: spot.latitude,
+						longitude: spot.longitude,
+						description: spot.description,
+						user: spot.user
+					})
+				}
+				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
+			}
+		})
+	}),
 	updateById: (req, res, next) => {
 		spotModel.findByIdAndUpdate(
 			req.params.spotId,

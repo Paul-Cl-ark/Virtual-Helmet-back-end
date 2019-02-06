@@ -14,7 +14,7 @@ module.exports = {
 		}
 		userModel.create(newUser, (err, result) => {
 			if (err) next(err)
-			else res.json({ status: 'success', message: 'User added successfully!', data: newUser })
+			else res.json({ status: 'success', message: 'User added successfully!', data: result })
 		})
 	}
 }

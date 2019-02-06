@@ -28,6 +28,12 @@ app.use((req, res, next) => {
 	next()
 })
 
+// global variables
+app.use((req, res, next) => {
+	res.locals.user = req.user || null
+	next()
+})
+
 const spots = require('./routes/spots')
 const users = require('./routes/users')
 

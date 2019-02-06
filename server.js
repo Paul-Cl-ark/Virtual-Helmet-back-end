@@ -8,7 +8,7 @@ const mongoose = require('./config/database') //database configuration
 const app = express()
 require('dotenv').load()
 
-app.use(session({ secret: process.env.TOKEN, resave: true, saveUninitialized: true }))
+app.use(session({ secret: process.env.TOKEN || 'secret', resave: true, saveUninitialized: true }))
 
 require('./config/passport')(passport)
 app.use(passport.initialize())
@@ -29,10 +29,10 @@ app.use((req, res, next) => {
 })
 
 // global variables
-app.use((req, res, next) => {
-	res.locals.user = req.user || null
-	next()
-})
+// app.use(function(req, res, next) {
+// 	res.locals.user = req.user || null
+// 	next()
+// })
 
 const spots = require('./routes/spots')
 const users = require('./routes/users')

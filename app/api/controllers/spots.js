@@ -32,8 +32,7 @@ module.exports = {
 			}
 		})
 	},
-	getUserSpotsOnly: (ensureAuthenticated,
-	(req, res, next) => {
+	getUserSpotsOnly: (req, res, next) => {
 		console.log(req.user)
 		let spotsList = []
 		spotModel.find({ user: req.user.id }, (err, spots) => {
@@ -53,7 +52,7 @@ module.exports = {
 				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
 			}
 		})
-	}),
+	},
 	updateById: (req, res, next) => {
 		spotModel.findByIdAndUpdate(
 			req.params.spotId,

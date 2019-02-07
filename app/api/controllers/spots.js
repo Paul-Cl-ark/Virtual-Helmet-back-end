@@ -25,7 +25,10 @@ module.exports = {
 						latitude: spot.latitude,
 						longitude: spot.longitude,
 						description: spot.description,
-						user: spot.user
+						user: spot.user,
+						rating: spot.rating,
+						image: spot.image,
+						raters: spot.raters
 					})
 				}
 				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
@@ -46,7 +49,10 @@ module.exports = {
 						latitude: spot.latitude,
 						longitude: spot.longitude,
 						description: spot.description,
-						user: spot.user
+						user: spot.user,
+						rating: spot.rating,
+						image: spot.image,
+						raters: spot.raters
 					})
 				}
 				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })

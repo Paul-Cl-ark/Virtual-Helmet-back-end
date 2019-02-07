@@ -4,13 +4,15 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const mongoose = require('./config/database') //database configuration
+const cloudinary = require('cloudinary')
+const formData = require('express-form-data')
 
 const app = express()
 require('dotenv').load()
 
 app.use(
 	session({
-		secret: process.env.TOKEN,
+		secret: process.env.EXPRESS_SESSION_TOKEN,
 		resave: true,
 		saveUninitialized: true,
 		cookie: { domain: undefined }
@@ -33,6 +35,21 @@ app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*')
 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
 	next()
+})
+
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+app.use(formData.parse())
+
+app.post('/API/image-upload', (req, res) => {
+	const values = Object.values(req.files)
+	const promises = values.map(image => cloudinary.uploader.upload(image.path))
+
+	Promise.all(promises).then(results => res.json(results))
 })
 
 const spots = require('./routes/spots')

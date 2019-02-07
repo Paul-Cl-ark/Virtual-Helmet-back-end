@@ -86,7 +86,8 @@ module.exports = {
 			description: req.body.description,
 			user: req.user.id,
 			rating: 0,
-			raters: []
+			raters: [],
+			image: req.body.image
 		}
 		spotModel.create(newSpot, (err, result) => {
 			if (err) next(err)

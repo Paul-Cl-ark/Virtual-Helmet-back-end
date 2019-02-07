@@ -26,6 +26,7 @@ const SpotSchema = new Schema({
 	},
 	user: {
 		type: String,
+		trim: true,
 		required: true
 	},
 	rating: {
@@ -35,6 +36,11 @@ const SpotSchema = new Schema({
 	},
 	raters: {
 		type: Array,
+		trim: true,
+		required: true
+	},
+	image: {
+		type: String,
 		trim: true,
 		required: true
 	}

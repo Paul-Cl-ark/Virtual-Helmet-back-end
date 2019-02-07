@@ -28,8 +28,7 @@ const UserSchema = new Schema({
 		type: String,
 		trim: true,
 		required: true
-	},
-	spots: [{ type: SchemaTypes.ObjectId, ref: 'Spot' }]
+	}
 })
 
 UserSchema.pre('save', function(next) {

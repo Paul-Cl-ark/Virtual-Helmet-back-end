@@ -8,7 +8,14 @@ const mongoose = require('./config/database') //database configuration
 const app = express()
 require('dotenv').load()
 
-app.use(session({ secret: process.env.TOKEN || 'secret', resave: true, saveUninitialized: true }))
+app.use(
+	session({
+		secret: process.env.TOKEN,
+		resave: true,
+		saveUninitialized: true,
+		cookie: { domain: undefined }
+	})
+)
 
 require('./config/passport')(passport)
 app.use(passport.initialize())
@@ -28,22 +35,13 @@ app.use((req, res, next) => {
 	next()
 })
 
-// global variables
-// app.use(function(req, res, next) {
-// 	res.locals.user = req.user || null
-// 	next()
-// })
-
 const spots = require('./routes/spots')
 const users = require('./routes/users')
 
 // public route
-app.use('/users', users)
+app.use('/API/users', users)
 // private route
-app.use('/spots', spots)
-app.get('/favicon.ico', (req, res) => {
-	res.sendStatus(204)
-})
+app.use('/API/spots', spots)
 
 // express doesn't consider not found 404 as an error so we need to handle 404 explicitly
 // handle 404 error

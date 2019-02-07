@@ -84,7 +84,7 @@ module.exports = {
 			latitude: req.body.latitude,
 			longitude: req.body.longitude,
 			description: req.body.description,
-			user: req.body.user
+			user: req.user.id
 		}
 		spotModel.create(newSpot, (err, result) => {
 			if (err) next(err)

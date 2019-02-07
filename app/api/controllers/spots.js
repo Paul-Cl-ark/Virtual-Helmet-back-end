@@ -84,11 +84,16 @@ module.exports = {
 			latitude: req.body.latitude,
 			longitude: req.body.longitude,
 			description: req.body.description,
-			user: req.user.id
+			user: req.user.id,
+			rating: 0,
+			raters: []
 		}
 		spotModel.create(newSpot, (err, result) => {
 			if (err) next(err)
-			else res.json({ status: 'success', message: 'Spot added successfully!', data: newSpot })
+			else {
+				console.log(result)
+				res.json({ status: 'success', message: 'Spot added successfully!', data: result })
+			}
 		})
 	}
 }

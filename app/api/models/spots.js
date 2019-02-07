@@ -27,6 +27,16 @@ const SpotSchema = new Schema({
 	user: {
 		type: String,
 		required: true
+	},
+	rating: {
+		type: Number,
+		trim: true,
+		required: true
+	},
+	raters: {
+		type: Array,
+		trim: true,
+		required: true
 	}
 })
 module.exports = mongoose.model('Spot', SpotSchema)

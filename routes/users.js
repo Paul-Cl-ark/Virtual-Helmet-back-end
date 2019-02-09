@@ -9,13 +9,9 @@ require('../config/passport')(passport)
 
 router.post('/register', userController.create)
 
-router.post(
-	'/authenticate',
-	passport.authenticate('local', { failureRedirect: '/login' }),
-	(req, res, next) => {
-		return res.json({ user: req.user })
-	}
-)
+router.post('/authenticate', passport.authenticate('local'), (req, res, next) => {
+	return res.json({ user: req.user })
+})
 
 router.get('/logout', (req, res) => {
 	req.logout()

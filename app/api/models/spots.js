@@ -41,8 +41,7 @@ const SpotSchema = new Schema({
 	},
 	image: {
 		type: String,
-		trim: true,
-		required: true
+		trim: true
 	},
 	date: {
 		type: Date,

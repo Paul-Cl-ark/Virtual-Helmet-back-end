@@ -12,9 +12,9 @@ module.exports = {
 			email: req.body.email,
 			password: req.body.password
 		}
-		userModel.create(newUser, (err, result) => {
+		userModel.create(newUser, (err, user) => {
 			if (err) next(err)
-			else res.json({ status: 'success', message: 'User added successfully!', data: result })
+			else res.json({ user: user })
 		})
 	}
 }

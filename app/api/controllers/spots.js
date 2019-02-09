@@ -19,17 +19,7 @@ module.exports = {
 				next(err)
 			} else {
 				for (let spot of spots) {
-					spotsList.push({
-						id: spot._id,
-						type: spot.type,
-						latitude: spot.latitude,
-						longitude: spot.longitude,
-						description: spot.description,
-						user: spot.user,
-						rating: spot.rating,
-						image: spot.image,
-						raters: spot.raters
-					})
+					spotsList.push(spot)
 				}
 				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
 			}

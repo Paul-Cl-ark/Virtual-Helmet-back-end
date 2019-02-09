@@ -6,8 +6,7 @@ const Schema = mongoose.Schema
 const SpotSchema = new Schema({
 	type: {
 		type: String,
-		trim: true,
-		required: true
+		trim: true
 	},
 	latitude: {
 		type: SchemaTypes.Double,

@@ -43,6 +43,10 @@ const SpotSchema = new Schema({
 		type: String,
 		trim: true,
 		required: true
+	},
+	date: {
+		type: Date,
+		default: Date.now
 	}
 })
 module.exports = mongoose.model('Spot', SpotSchema)

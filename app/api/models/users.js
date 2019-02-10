@@ -29,6 +29,10 @@ const UserSchema = new Schema({
 		trim: true,
 		required: true
 	},
+	image: {
+		type: String,
+		trim: true
+	},
 	date: {
 		type: Date,
 		default: Date.now

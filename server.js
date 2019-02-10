@@ -6,6 +6,7 @@ const passport = require('passport')
 const mongoose = require('./config/database') //database configuration
 const cloudinary = require('cloudinary')
 const formData = require('express-form-data')
+const { ensureAuthenticated } = require('./helpers/auth')
 
 const app = express()
 require('dotenv').load()
@@ -45,7 +46,7 @@ cloudinary.config({
 
 app.use(formData.parse())
 
-app.post('/API/image-upload', (req, res) => {
+app.post('/API/image-upload', ensureAuthenticated, (req, res) => {
 	const values = Object.values(req.files)
 	const promises = values.map(image => cloudinary.uploader.upload(image.path))
 

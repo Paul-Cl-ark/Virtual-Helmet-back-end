@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../app/api/controllers/users')
+const { ensureAuthenticated } = require('../helpers/auth')
 
 const passport = require('passport')
 
@@ -20,6 +21,8 @@ router.post('/authenticate', passport.authenticate('local'), (req, res, next) =>
 		}
 	})
 })
+
+router.put('/', ensureAuthenticated, userController.update)
 
 router.get('/logout', (req, res) => {
 	req.logout()

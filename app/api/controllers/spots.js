@@ -1,14 +1,12 @@
 const spotModel = require('../models/spots')
-const { ensureAuthenticated } = require('../../../helpers/auth')
 
 module.exports = {
 	getById: (req, res, next) => {
-		console.log(req.body)
 		spotModel.findById(req.params.spotId, (err, spotInfo) => {
 			if (err) {
 				next(err)
 			} else {
-				res.json({ status: 'success', message: 'Spot found!', data: { spots: spotInfo } })
+				res.json({ data: { spots: spotInfo } })
 			}
 		})
 	},
@@ -21,56 +19,41 @@ module.exports = {
 				for (let spot of spots) {
 					spotsList.push(spot)
 				}
-				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
+				res.json({ data: { spots: spotsList } })
 			}
 		})
 	},
 	getUserSpotsOnly: (req, res, next) => {
-		console.log(req.user)
 		let spotsList = []
 		spotModel.find({ user: req.user.id }, (err, spots) => {
 			if (err) {
 				next(err)
 			} else {
 				for (let spot of spots) {
-					spotsList.push({
-						id: spot._id,
-						type: spot.type,
-						latitude: spot.latitude,
-						longitude: spot.longitude,
-						description: spot.description,
-						user: spot.user,
-						rating: spot.rating,
-						image: spot.image,
-						raters: spot.raters
-					})
+					spotsList.push(spot)
 				}
-				res.json({ status: 'success', message: 'Spots list found!', data: { spots: spotsList } })
+				res.json({ data: { spots: spotsList } })
 			}
 		})
 	},
 	updateById: (req, res, next) => {
-		spotModel.findByIdAndUpdate(
-			req.params.spotId,
-			{
-				type: req.body.type,
-				latitude: req.body.latitude,
-				longitude: req.body.latitude,
-				description: req.body.description
-			},
-			(err, spotInfo) => {
-				if (err) next(err)
-				else {
-					res.json({ status: 'success', message: 'Spot updated successfully!', data: null })
-				}
+		const spot = req.body.spot
+		const rating = req.body.rating
+		let updatedSpot = { ...spot, rating: spot.rating + rating }
+		updatedSpot.raters.push({ user: req.user._id, rating: rating })
+
+		spotModel.findOneAndUpdate({ _id: spot._id }, updatedSpot, (err, result) => {
+			if (err) next(err)
+			else {
+				res.json({ message: 'Spot updated successfully!', data: result })
 			}
-		)
+		})
 	},
 	deleteById: (req, res, next) => {
 		spotModel.findByIdAndRemove(req.params.spotId, function(err, spotInfo) {
 			if (err) next(err)
 			else {
-				res.json({ status: 'success', message: 'Spot deleted successfully!', data: null })
+				res.json({ message: 'Spot deleted successfully!', data: null })
 			}
 		})
 	},
@@ -80,7 +63,7 @@ module.exports = {
 			latitude: req.body.latitude,
 			longitude: req.body.longitude,
 			description: req.body.description,
-			user: req.user.id,
+			user: req.user._id,
 			rating: 0,
 			raters: [],
 			image: req.body.image
@@ -88,8 +71,7 @@ module.exports = {
 		spotModel.create(newSpot, (err, result) => {
 			if (err) next(err)
 			else {
-				console.log(result)
-				res.json({ status: 'success', message: 'Spot added successfully!', data: result })
+				res.json({ message: 'Spot added successfully!', data: result })
 			}
 		})
 	}

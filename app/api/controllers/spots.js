@@ -37,17 +37,22 @@ module.exports = {
 		})
 	},
 	updateById: (req, res, next) => {
-		const spot = req.body.spot
-		const rating = req.body.rating
-		let updatedSpot = { ...spot, rating: spot.rating + rating }
-		updatedSpot.raters.push({ user: req.user._id, rating: rating })
+		const _id = req.body._id
+		const userRating = req.body.rating
+		const userId = req.user._id
+		const userRatingObject = { user: userId, rating: userRating }
 
-		spotModel.findOneAndUpdate({ _id: spot._id }, updatedSpot, (err, result) => {
-			if (err) next(err)
-			else {
-				res.json({ message: 'Spot updated successfully!', data: result })
+		spotModel.findOneAndUpdate(
+			{ _id: _id },
+			{ $inc: { rating: +userRating }, $push: { raters: userRatingObject } },
+			{ new: true },
+			(err, result) => {
+				if (err) next(err)
+				else {
+					res.json({ message: 'Spot updated successfully!', data: result })
+				}
 			}
-		})
+		)
 	},
 	deleteById: (req, res, next) => {
 		spotModel.findByIdAndRemove(req.params.spotId, function(err, spotInfo) {

@@ -26,6 +26,7 @@ module.exports = {
 			{
 				image: url
 			},
+			{ new: true },
 			(err, result) => {
 				if (err) next(err)
 				else {

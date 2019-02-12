@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 require('mongoose-double')(mongoose)
 const SchemaTypes = mongoose.Schema.Types
-
 const Schema = mongoose.Schema
+
 const SpotSchema = new Schema({
 	type: {
 		type: String,

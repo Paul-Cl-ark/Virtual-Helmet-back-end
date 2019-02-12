@@ -1,12 +1,9 @@
 const mongoose = require('mongoose')
 var uniqueValidator = require('mongoose-unique-validator')
-
+const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs')
 const saltRounds = 10
 
-const SchemaTypes = mongoose.Schema.Types
-
-const Schema = mongoose.Schema
 const UserSchema = new Schema({
 	firstName: {
 		type: String,

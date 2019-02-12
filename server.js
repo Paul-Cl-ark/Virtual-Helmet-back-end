@@ -3,12 +3,13 @@ const logger = require('morgan')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const passport = require('passport')
-const mongoose = require('./config/database') //database configuration
-const cloudinary = require('cloudinary')
+const mongoose = require('./config/database')
+const cloudinary = require('./config/cloudinary')
 const formData = require('express-form-data')
 const { ensureAuthenticated } = require('./helpers/auth')
 
 const app = express()
+
 require('dotenv').load()
 
 app.use(
@@ -28,9 +29,9 @@ app.use(passport.session())
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.use(logger('dev'))
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(formData.parse())
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*')
@@ -38,20 +39,7 @@ app.use((req, res, next) => {
 	next()
 })
 
-cloudinary.config({
-	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-	api_key: process.env.CLOUDINARY_API_KEY,
-	api_secret: process.env.CLOUDINARY_API_SECRET
-})
-
-app.use(formData.parse())
-
-app.post('/API/image-upload', ensureAuthenticated, (req, res) => {
-	const values = Object.values(req.files)
-	const promises = values.map(image => cloudinary.uploader.upload(image.path))
-
-	Promise.all(promises).then(results => res.json(results))
-})
+// routes
 
 const spots = require('./routes/spots')
 const users = require('./routes/users')
@@ -60,20 +48,26 @@ const users = require('./routes/users')
 app.use('/API/users', users)
 // private route
 app.use('/API/spots', spots)
+// cloudinary route
+app.post('/API/image-upload', ensureAuthenticated, (req, res) => {
+	const values = Object.values(req.files)
+	const promises = values.map(image => cloudinary.uploader.upload(image.path))
+	Promise.all(promises).then(results => res.json(results))
+})
 
-// express doesn't consider not found 404 as an error so we need to handle 404 explicitly
 // handle 404 error
 app.use((req, res, next) => {
 	let err = new Error('Not Found')
 	err.status = 404
 	next(err)
 })
-// handle errors
+
+// handle other errors
 app.use((err, req, res, next) => {
 	console.log(err)
-
 	if (err.status === 404) res.status(404).json({ message: 'Not found' })
 })
+
 app.listen(3001, () => {
 	console.log('Node server listening on port 3001')
 })

@@ -5,7 +5,6 @@ const { ensureAuthenticated } = require('../helpers/auth')
 
 router.get('/', spotController.getAll)
 router.post('/', ensureAuthenticated, spotController.create)
-router.get('/user-spots', ensureAuthenticated, spotController.getUserSpotsOnly)
 router.get('/:spotId', spotController.getById)
 router.put('/:spotId', ensureAuthenticated, spotController.updateById)
 router.delete('/:spotId', ensureAuthenticated, spotController.deleteById)

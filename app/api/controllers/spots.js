@@ -23,19 +23,6 @@ module.exports = {
 			}
 		})
 	},
-	getUserSpotsOnly: (req, res, next) => {
-		let spotsList = []
-		spotModel.find({ user: req.user.id }, (err, spots) => {
-			if (err) {
-				next(err)
-			} else {
-				for (let spot of spots) {
-					spotsList.push(spot)
-				}
-				res.json({ data: { spots: spotsList } })
-			}
-		})
-	},
 	updateById: (req, res, next) => {
 		const _id = req.body._id
 		const userRating = req.body.rating

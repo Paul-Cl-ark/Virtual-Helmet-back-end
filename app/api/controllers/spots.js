@@ -2,11 +2,12 @@ const spotModel = require('../models/spots')
 
 module.exports = {
 	getById: (req, res, next) => {
-		spotModel.findById(req.params.spotId, (err, spotInfo) => {
+		const _id = req.params.spotId
+		spotModel.findOne({ _id }, (err, spot) => {
 			if (err) {
 				next(err)
 			} else {
-				res.json({ data: { spots: spotInfo } })
+				res.json(spot)
 			}
 		})
 	},

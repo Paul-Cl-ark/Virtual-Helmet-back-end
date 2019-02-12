@@ -30,7 +30,8 @@ module.exports = {
 			(err, result) => {
 				if (err) next(err)
 				else {
-					res.json({ message: 'User updated successfully!', data: result })
+					const updatedUser = ({ firstName, lastName, email, image } = result)
+					res.json({ message: 'User updated successfully!', data: updatedUser })
 				}
 			}
 		)

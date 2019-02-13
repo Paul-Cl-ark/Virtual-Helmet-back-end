@@ -1,11 +1,13 @@
 const express = require('express')
 const logger = require('morgan')
-const session = require('express-session')
+var cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const mongoose = require('./config/database')
 const cloudinary = require('./config/cloudinary')
 const formData = require('express-form-data')
+const flash = require('connect-flash')
+const session = require('express-session')
 const { ensureAuthenticated } = require('./helpers/auth')
 
 const app = express()
@@ -29,9 +31,11 @@ app.use(passport.session())
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.use(logger('dev'))
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(formData.parse())
+app.use(flash())
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*')

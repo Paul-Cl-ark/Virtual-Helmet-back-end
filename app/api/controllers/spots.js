@@ -30,17 +30,35 @@ module.exports = {
 		const userId = req.user._id
 		const userRatingObject = { user: userId, rating: userRating }
 
-		spotModel.findOneAndUpdate(
-			{ _id: _id },
-			{ $inc: { rating: +userRating }, $push: { raters: userRatingObject } },
-			{ new: true },
-			(err, result) => {
-				if (err) next(err)
-				else {
-					res.json({ message: 'Spot updated successfully!', data: result })
-				}
+		spotModel.findOne({ _id: _id }, (err, spot) => {
+			if (err) next(err)
+			const existingVote = spot.raters.find(rating => {
+				rating.user === userId
+			})
+			if (existingVote && existingVote.rating === userRating) {
+				return res.status(409).send({ message: 'You can only vote once!' })
+			} else if (existingVote && existingVote.rating !== userRating) {
+				existingVote.rating = userRating
+				spot.rating += userRating
+				return res.json({ data: spot })
+			} else {
+				spot.rating += userRating
+				spot.raters.push(userRatingObject)
+				return res.json({ data: spot })
 			}
-		)
+		})
+
+		// spotModel.findOneAndUpdate(
+		// 	{ _id: _id },
+		// 	{ $inc: { rating: +userRating }, $push: { raters: userRatingObject } },
+		// 	{ new: true },
+		// 	(err, result) => {
+		// 		if (err) next(err)
+		// 		else {
+		// 			res.json({ message: 'Spot updated successfully!', data: result })
+		// 		}
+		// 	}
+		// )
 	},
 	deleteById: (req, res, next) => {
 		spotModel.findByIdAndRemove(req.params.spotId, function(err, spotInfo) {

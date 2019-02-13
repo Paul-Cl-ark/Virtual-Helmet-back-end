@@ -10,16 +10,13 @@ module.exports = function(passport) {
 				email: email
 			}).then(user => {
 				if (!user) {
-					return done({ message: 'No user found' })
+					return done(null, false)
 				}
-
-				// match password
 				bcrypt.compare(password, user.password, (err, isMatch) => {
-					// if (err) throw err
 					if (isMatch) {
 						return done(null, user)
 					} else {
-						return done({ message: 'Access denied' })
+						return done(null, false)
 					}
 				})
 			})

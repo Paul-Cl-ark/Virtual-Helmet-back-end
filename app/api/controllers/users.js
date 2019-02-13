@@ -14,7 +14,7 @@ module.exports = {
 			image: null
 		}
 		userModel.create(newUser, (err, user) => {
-			if (err) next(err)
+			if (err) return res.status(409).send({ message: 'Email already in use' })
 			else res.json({ user: user })
 		})
 	},

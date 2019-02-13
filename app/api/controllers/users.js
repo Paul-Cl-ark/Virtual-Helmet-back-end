@@ -15,7 +15,14 @@ module.exports = {
 		}
 		userModel.create(newUser, (err, user) => {
 			if (err) return res.status(409).send({ message: 'Email already in use' })
-			else res.json({ user: user })
+			else {
+				req.login(user, err => {
+					if (err) {
+						console.log(err)
+					}
+					res.json({ user: user })
+				})
+			}
 		})
 	},
 	update: (req, res, next) => {

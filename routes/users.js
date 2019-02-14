@@ -13,7 +13,7 @@ router.post('/register', userController.create)
 router.post('/authenticate', passport.authenticate('local'), (req, res) => {
 	res.json({
 		user: {
-			id: req.user._id,
+			_id: req.user._id,
 			firstName: req.user.firstName,
 			lastName: req.user.lastName,
 			date: req.user.date,

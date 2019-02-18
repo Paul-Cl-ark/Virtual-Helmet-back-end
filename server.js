@@ -74,6 +74,7 @@ app.use((err, req, res, next) => {
 	if (err.status === 404) res.status(404).json({ message: 'Not found' })
 })
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
+	const port = process.env.PORT
 	console.log('Node server listening on port 3001')
 })

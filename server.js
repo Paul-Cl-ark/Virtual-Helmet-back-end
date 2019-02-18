@@ -24,6 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
 		})
 	)
 }
+// app.use(express.static('client/build'))
 
 require('./config/passport')(passport)
 app.use(passport.initialize())

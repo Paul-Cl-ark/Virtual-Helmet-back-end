@@ -12,16 +12,18 @@ const { ensureAuthenticated } = require('./helpers/auth')
 
 const app = express()
 
-require('dotenv').load()
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').load()
 
-app.use(
-	session({
-		secret: process.env.EXPRESS_SESSION_TOKEN,
-		resave: true,
-		saveUninitialized: true,
-		cookie: { domain: undefined }
-	})
-)
+	app.use(
+		session({
+			secret: process.env.EXPRESS_SESSION_TOKEN,
+			resave: true,
+			saveUninitialized: true,
+			cookie: { domain: undefined }
+		})
+	)
+}
 
 require('./config/passport')(passport)
 app.use(passport.initialize())
